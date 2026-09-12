@@ -1,0 +1,108 @@
+// PMO情報整理・交通整理アプリ - データモデル
+// 詳細は設計書 (README/仕様) を参照
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// 情報一覧の1件。会議・チャット・資料などから得た情報を最小の入力で記録する。
+model Information {
+  id String @id @default(cuid())
+
+  content String
+
+  // 対象（任意）
+  project String?
+  system  String?
+  domain  String?
+
+  // 分類（後から整理する項目。未設定はデフォルト値のまま）
+  category           String @default("未分類")
+  importance         String @default("未判定")
+  understandingLevel String @default("未判定")
+  action             String @default("未判定")
+
+  // 情報源
+  source       String?
+  sourceDetail String?
+
+  note String?
+
+  archived Boolean @default(false)
+
+  meetingId String?
+  meeting   Meeting? @relation(fields: [meetingId], references: [id], onDelete: SetNull)
+
+  nextActions NextAction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([meetingId])
+  @@index([archived])
+  @@index([category])
+  @@index([importance])
+  @@index([understandingLevel])
+  @@index([action])
+  @@index([project])
+}
+
+// 会議。論点・事実/前提・未決事項・決定事項をメモとして持ち、Next Actionを紐付ける。
+model Meeting {
+  id String @id @default(cuid())
+
+  title       String
+  project     String?
+  meetingDate DateTime?
+
+  notes        MeetingNote[]
+  informations Information[]
+  nextActions  NextAction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 会議内の論点 / 事実・前提 / 未決事項 / 決定事項
+model MeetingNote {
+  id String @id @default(cuid())
+
+  meetingId String
+  meeting   Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+
+  type    String // topic | fact | open_issue | decision
+  content String
+  order   Int    @default(0)
+
+  createdAt DateTime @default(now())
+
+  @@index([meetingId, type])
+}
+
+// Next Action（誰が・何を・いつまでに）
+model NextAction {
+  id String @id @default(cuid())
+
+  action  String
+  owner   String?
+  dueDate DateTime?
+  status  String    @default("未着手")
+
+  meetingId String?
+  meeting   Meeting? @relation(fields: [meetingId], references: [id], onDelete: SetNull)
+
+  informationId String?
+  information   Information? @relation(fields: [informationId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([meetingId])
+  @@index([informationId])
+  @@index([status])
+}
