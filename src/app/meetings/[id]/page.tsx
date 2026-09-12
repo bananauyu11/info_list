@@ -22,7 +22,7 @@ export default function MeetingDetailPage({ params }: { params: Promise<{ id: st
     if (!meeting) return;
     if (!confirm(`「${meeting.title}」を削除しますか？紐付く情報・Next Actionの紐付けは解除されます。`)) return;
     await apiDelete(`/api/meetings/${id}`);
-    router.push("/meetings");
+    router.push("/");
   }
 
   if (!meeting) {
@@ -35,8 +35,8 @@ export default function MeetingDetailPage({ params }: { params: Promise<{ id: st
     <div className="mx-auto max-w-3xl space-y-4 px-4 py-6">
       <div className="flex items-center justify-between">
         <div>
-          <Link href="/meetings" className="text-xs text-blue-600 hover:underline dark:text-blue-400">
-            ← 会議一覧
+          <Link href="/" className="text-xs text-blue-600 hover:underline dark:text-blue-400">
+            ← ホーム
           </Link>
           <h1 className="text-lg font-bold">{meeting.title}</h1>
           <p className="text-xs text-gray-400">

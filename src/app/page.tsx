@@ -1,9 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import useSWR from "swr";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { fetcher } from "@/lib/fetcher";
 import QuickAddInformation from "@/components/QuickAddInformation";
+import CreateMeetingForm from "@/components/CreateMeetingForm";
 import type { InformationDTO, MeetingDTO } from "@/lib/types";
 
 interface StatsResponse {
@@ -18,7 +21,9 @@ interface StatsResponse {
 }
 
 export default function HomePage() {
+  const router = useRouter();
   const { data, mutate } = useSWR<StatsResponse>("/api/stats", fetcher);
+  const [showMeetingForm, setShowMeetingForm] = useState(false);
 
   return (
     <div className="mx-auto max-w-3xl space-y-6 px-4 py-6">
@@ -76,10 +81,20 @@ export default function HomePage() {
       <section>
         <div className="mb-2 flex items-center justify-between">
           <h2 className="text-sm font-semibold text-gray-600 dark:text-gray-300">会議</h2>
-          <Link href="/meetings" className="text-xs text-blue-600 hover:underline dark:text-blue-400">
-            すべて見る
-          </Link>
+          <button
+            onClick={() => setShowMeetingForm((v) => !v)}
+            className="text-xs font-semibold text-blue-600 hover:underline dark:text-blue-400"
+          >
+            ＋ 会議を作成
+          </button>
         </div>
+
+        {showMeetingForm && (
+          <div className="mb-2">
+            <CreateMeetingForm onCreated={(meeting) => router.push(`/meetings/${meeting.id}`)} />
+          </div>
+        )}
+
         <ul className="divide-y divide-black/5 rounded-xl border border-black/10 bg-white dark:divide-white/10 dark:border-white/10 dark:bg-white/5">
           {data?.meetings.length === 0 && (
             <li className="px-4 py-6 text-center text-sm text-gray-400">
