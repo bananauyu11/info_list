@@ -1,4 +1,4 @@
-// 情報一覧・会議・Next Action で使う選択肢の定義。
+// 情報整理一覧・会議・Next Action で使う選択肢の定義。
 // SQLiteはネイティブenumを持たないため、文字列 + アプリ側バリデーションで管理する。
 
 export const CATEGORY_OPTIONS = [

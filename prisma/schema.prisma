@@ -7,7 +7,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
 }
 
 // 情報一覧の1件。会議・チャット・資料などから得た情報を最小の入力で記録する。

@@ -6,7 +6,7 @@ import { ReactNode } from "react";
 
 const NAV_ITEMS = [
   { href: "/", label: "ホーム", icon: HomeIcon },
-  { href: "/information", label: "情報一覧", icon: ListIcon },
+  { href: "/information", label: "情報整理一覧", icon: ListIcon },
   { href: "/actions", label: "Next Action", icon: ActionIcon },
   { href: "/settings", label: "設定", icon: SettingsIcon },
 ];

@@ -70,7 +70,7 @@ function InformationPageInner() {
   return (
     <div className="mx-auto max-w-5xl space-y-4 px-4 py-6">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h1 className="text-lg font-bold">情報一覧</h1>
+        <h1 className="text-lg font-bold">情報整理一覧</h1>
         <div className="flex gap-2">
           <Link
             href="/information/triage"

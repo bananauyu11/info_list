@@ -169,7 +169,7 @@ export default function ImportPage() {
           {result.invalidCount > 0 && ` （${result.invalidCount}件はエラーのためスキップしました）`}
           <div className="mt-2">
             <Link href="/information" className="underline">
-              情報一覧を確認する
+              情報整理一覧を確認する
             </Link>
           </div>
         </div>
